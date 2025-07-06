@@ -8,8 +8,6 @@ import { LayoutDashboard } from 'lucide-react';
 
 // import { Bot } from 'lucide-react';
 
-
-
 import {
   Plus,
   MoreHorizontal,
@@ -56,6 +54,7 @@ import {
   Pie,
   Cell,
 } from "recharts"
+import DashboardPage from "@/components/DashboardPage.tsx"
 
 
 function SidebarItem({ icon, label }: { icon: React.ReactNode; label: string }) {
@@ -1184,65 +1183,15 @@ Senior HR Business Partner
 
     {/* MAIN SECTION */}
     <div className="flex-1 flex flex-col">
-      {/* TOP BAR */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-gray-900">
-            {currentView === "dashboard"
-              ? "HR Analytics Dashboard"
-              : currentView === "upload"
-              ? "AI Resume Analysis"
-              : currentView === "processing"
-              ? "Processing Analysis"
-              : "Analysis Results"}
-          </h1>
-          <p className="text-sm text-gray-500">
-            {currentView === "dashboard"
-              ? "Comprehensive HR Metrics & Analytics"
-              : "Advanced Candidate Matching"}
-          </p>
-        </div>
-
-        {/* Search + Bell + Profile */}   
-<div className="flex items-center space-x-4">
-  <div className="relative">
-    <input
-      type="text"
-      placeholder="Search..."
-      className="pl-9 pr-3 py-1 w-64 border-2 border-orange-500 rounded-md text-sm bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200"
-    />
-    <svg
-      className="absolute left-2 top-1/2 transform -translate-y-1/2 text-orange-500 w-4 h-4"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
-    </svg>
-  </div>
-  <Bell className="text-gray-600 w-5 h-5 cursor-pointer hover:text-orange-800" />
-  <img
-    src="https://ui-avatars.com/api/?name=Aiden+Max"
-    alt="Profile"
-    className="w-8 h-8 rounded-full"
-  />
-</div>
-
-      </header>
-
       {/* ORIGINAL CONTENT RENDERING */}
       <main className="flex-1 overflow-y-auto">
-{currentView === "dashboard" && (
-  <div className="p-6">
-    {renderDashboard()}
-  </div>
-)}
-
-        {currentView === "upload" && <div className="p-6">Upload Section</div>}
-        {currentView === "processing" && <div className="p-6">Processing...</div>}
-        {currentView === "results" && <div className="p-6">Results</div>}
-      </main>
+          {currentView === "dashboard" && (
+            <DashboardPage />
+          )}
+          {currentView === "upload" && <div className="p-6">Upload Section</div>}
+          {currentView === "processing" && <div className="p-6">Processing...</div>}
+          {currentView === "results" && <div className="p-6">Results</div>}
+        </main>
     </div>
   </div>
 )

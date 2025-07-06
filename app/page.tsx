@@ -55,6 +55,7 @@ import {
   Cell,
 } from "recharts"
 import DashboardPage from "@/components/DashboardPage.tsx"
+import RecruitmentBoard from "@/components/RecruitmentBoard.tsx"
 
 
 function SidebarItem({ icon, label }: { icon: React.ReactNode; label: string }) {

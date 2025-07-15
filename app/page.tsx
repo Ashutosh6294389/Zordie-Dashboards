@@ -66,6 +66,7 @@ import DashboardPage from "@/components/DashboardPage"
 import HRAnalyticsDashboard from "@/components/HRAnalyticsDashboard"
 import RecruitmentBoard from "@/components/RecruitmentBoard"
 import CandidatesPage from "@/components/CandidatesPage"
+import Support from "@/components/Support"
 
 
 function SidebarItem({ icon, label, active = false }: { icon: React.ReactNode; label: string; active?: boolean }) {
@@ -182,6 +183,7 @@ export default function HRDashboard() {
       setDragActive(false)
     }
   }
+
   const handleSidebarClick = (label: string) => {
     if (label === "Candidates") {
       setCurrentView("candidates");
@@ -191,6 +193,9 @@ export default function HRDashboard() {
     else if (label == "Recruitment") {
       setCurrentView("Recruitment");
       
+    }
+    else if( label == "Support") {
+      setCurrentView("Support");
     }
     // add more as needed
   };
@@ -1171,7 +1176,8 @@ Senior HR Business Partner
           <SidebarItem icon={<Calendar size={24} />} label="Schedule" />
         </Link>
         <SidebarItem icon={<Clock size={24} />} label="Compliance & Audit" />
-        <Link href="/Support">
+        <Link href="#" 
+          onClick={() => handleSidebarClick("Support")}>
           <SidebarItem icon={<Award size={24} />} label="Support" />
         </Link>
         <div
@@ -1212,6 +1218,7 @@ Senior HR Business Partner
           {currentView === "results" && renderResults()}
           {currentView === "candidates" && <CandidatesPage />}
           {currentView === "Recruitment" && <RecruitmentBoard />}
+          {currentView === "Support" && <Support />}
         </main>
       </div>
     </div>

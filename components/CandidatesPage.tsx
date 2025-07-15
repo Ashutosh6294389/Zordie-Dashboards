@@ -731,7 +731,7 @@ function DashboardHeader() {
 
 export default function CandidatesPage() {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 bg-gray-50 min-h-screen">
       <DashboardHeader />
       <div className="flex gap-4 mb-8">
         {/* Left: KPI cards in a row, stacked with Schedule below */}

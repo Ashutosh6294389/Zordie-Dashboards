@@ -141,7 +141,7 @@ function ApplicationsBarChartCard() {
               value: "Number of Candidates",
               angle: -90,
               position: "insideLeft",
-              offset: 10,
+              offset: 30,
               fontSize: 14,
               fill: "#6B7280",
             }}
@@ -961,7 +961,7 @@ function OngoingActivitiesCard() {
 
 export default function DashboardPage() {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 bg-gray-50 min-h-screen">
       <DashboardHeader />
       <div className="flex gap-4 mb-8">
         <div className="flex flex-col flex-1 gap-12">

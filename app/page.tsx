@@ -3,7 +3,24 @@ import { useState } from "react"
 import type React from "react"
 import {  Bell } from "lucide-react";
 import Link from 'next/link'
-import { LayoutDashboard } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Bot,
+  ChartBar,
+  Users,
+  Calendar,
+  Clock,
+  Award,
+  Settings,
+  MessageSquare,
+  ChatBubbleIcon,
+  UserPlus,
+  User,
+  Briefcase,
+  Edit2,
+  ClipboardList,
+  Users2,
+} from "lucide-react";
 
 
 // import { Bot } from 'lucide-react';
@@ -14,23 +31,14 @@ import {
   BarChart3,
   Upload,
   FileText,
-  Users,
   CheckCircle,
   ArrowLeft,
   TrendingUp,
   TrendingDown,
-  Clock,
   DollarSign,
   Target,
-  Award,
   Filter,
-  Calendar,
-  Settings,
-  User,
-  Bot,
-  UserPlus,
   Wallet,
-  ChartBar,
 } from "lucide-react"
 import {
   Line,
@@ -54,19 +62,26 @@ import {
   Pie,
   Cell,
 } from "recharts"
-import DashboardPage from "@/components/DashboardPage.tsx"
-import RecruitmentBoard from "@/components/RecruitmentBoard.tsx"
+import DashboardPage from "@/components/DashboardPage"
+import HRAnalyticsDashboard from "@/components/HRAnalyticsDashboard"
+import RecruitmentBoard from "@/components/RecruitmentBoard"
+import CandidatesPage from "@/components/CandidatesPage"
 
 
-function SidebarItem({ icon, label }: { icon: React.ReactNode; label: string }) {
+function SidebarItem({ icon, label, active = false }: { icon: React.ReactNode; label: string; active?: boolean }) {
   return (
-    <div className="group flex items-center space-x-3 cursor-pointer px-3 py-2 rounded-md transition duration-300 hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#60a5fa] hover:text-white">
-      <div className="text-orange-500 group-hover:text-white">{icon}</div>
-      <span className="text-base font-medium">{label}</span>
+    <div
+      className={`group flex items-center space-x-3 cursor-pointer px-3 py-2 rounded-md transition duration-300 ${
+        active
+          ? "bg-green-500 text-white shadow-md"
+          : "hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#60a5fa] hover:text-white"
+      }`}
+    >
+      <div className={active ? "text-white" : "text-gray-500 group-hover:text-white"}>{icon}</div>
+      <span className={`text-base font-medium ${active ? "text-white" : ""}`}>{label}</span>
     </div>
   );
 }
-
 // Agent Component with status dot
 function Agent({ icon, name, dotColor }) {
   return (
@@ -149,9 +164,9 @@ const interviewSuccessData = [
 ]
 
 export default function HRDashboard() {
-  const [currentView, setCurrentView] = useState<"dashboard" | "upload" | "processing" | "results" | "error">(
-    "dashboard",
-  )
+  const [currentView, setCurrentView] = useState<
+    "dashboard" | "upload" | "processing" | "results" | "error" | "candidates"
+  >("dashboard");
   const [uploadedResumes, setUploadedResumes] = useState<File[]>([])
   const [jobDescription, setJobDescription] = useState("")
   const [dragActive, setDragActive] = useState(false)
@@ -167,6 +182,18 @@ export default function HRDashboard() {
       setDragActive(false)
     }
   }
+  const handleSidebarClick = (label: string) => {
+    if (label === "Candidates") {
+      setCurrentView("candidates");
+    } else if (label === "Dashboard") {
+      setCurrentView("dashboard");
+    }
+    else if (label == "Recruitment") {
+      setCurrentView("Recruitment");
+      
+    }
+    // add more as needed
+  };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -1114,86 +1141,79 @@ Senior HR Business Partner
   <div className="flex min-h-screen bg-gray-100">
     {/* SIDEBAR */}
     <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-<div className="flex items-center space-x-2">
-  <img
-    src="/assets/zordie-logo.png"
-    alt="Zordie Logo"
-    className="w-13 h-12"
-  />
-  <h1 className="text-2xl font-bold text-black-600">ZORDIE</h1>
-</div>
-
-      <nav className="flex-1 px-4 py-6 space-y-3 text-gray-700">
-<Link href="/">
-  <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" />
-</Link>
-<Link href="/AIChatBot">
-  <SidebarItem icon={<Bot size={20} />} label="Prime Copilot" />
-</Link>
-
-<Link href="/workspace">
-  <div>
-    <SidebarItem icon={<FileText size={20} />} label="Workspace" />
-  </div>
-</Link>
-<Link href="/RBACRoleManager">
-  <SidebarItem icon={<CheckCircle size={20} />} label="RBAC Role Manager" />
-</Link>
-      <SidebarItem icon={<User size={20} />} label="Agent Management" />
-      <Link href="/Analytics&Reporting">
-  <SidebarItem icon={<ChartBar size={20} />} label="Analytics & reporting" />
-</Link>
-
-<Link href="/CalendarPage">
-  <div>
-    <SidebarItem icon={<Calendar size={20} />} label="Schedule" />
-  </div>
-</Link>
-      <SidebarItem icon={<Clock size={20} />} label="Compliance & Audit" />
- <Link href="/Nova">
-  <SidebarItem icon={<DollarSign size={20} />} label="Nova Document Hub" />
-</Link>
-<Link href="/Support">
-  <SidebarItem icon={<Award size={20} />} label="Support" />
-</Link>
-<div
-  onClick={() => handleSidebarClick("Settings")}
-  className="flex items-center space-x-3 cursor-pointer px-3 py-2 rounded-md transition duration-300 hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#60a5fa] hover:text-white"
->
-  <Settings size={18} className="text-orange-500" /> <span>Settings</span>
-</div>
-
-       {/* Active Agents Section */}
-<div className="mt-6">
-        <h4 className="text-sm font-semibold text-gray-600 mb-3">Active Agents</h4>
-<Link href="/optimus-dashboard">
-  <div>
-    <Agent
-      icon={<UserPlus size={16} className="text-blue-600" />}
-      name="Optimus"
-      dotColor="bg-green-500"
-    />
-  </div>
-</Link>
-        <Agent icon={<Clock size={16} className="text-red-500" />} name="Maxi" dotColor="bg-green-500" />
-        <Agent icon={<Wallet size={16} className="text-amber-700" />} name="Laxmi" dotColor="bg-orange-400" />
-        <Agent icon={<FileText size={16} className="text-purple-600" />} name="Nova" dotColor="bg-red-500" />
+      <div className="flex items-center space-x-2">
+        <img
+          src="/assets/zordie-logo.png"
+          alt="Zordie Logo"
+          className="w-13 h-12"
+        />
+        <h1 className="text-2xl font-bold text-black-600">ZORDIE</h1>
       </div>
+
+      <nav className="flex-1 px-4 py-6 space-y-1 text-gray-700">
+        <Link href="#" onClick={() => handleSidebarClick("Dashboard")}>
+          <SidebarItem icon={<LayoutDashboard size={24} />} label="Dashboard"  />
+        </Link>
+        <Link href="/AIChatBot">
+          <SidebarItem icon={<Bot size={24} />} label="Prime Copilot" />
+        </Link>
+        <Link href="#" onClick={() => handleSidebarClick("Recruitment")}>
+            <SidebarItem icon={<FileText size={24} />} label="Recruitment" />
+        </Link>
+        <Link href="/Analytics&Reporting">
+          <SidebarItem icon={<ChartBar size={24} />} label="Analytics & Reporting" />
+        </Link>
+        {/* My Jobs - add your route if available */}
+        {/* <Link href="/my-jobs">
+          <SidebarItem icon={<ClipboardList size={24} />} label="My Jobs" />
+        </Link> */}
+        <Link href="/CalendarPage">
+          <SidebarItem icon={<Calendar size={24} />} label="Schedule" />
+        </Link>
+        <SidebarItem icon={<Clock size={24} />} label="Compliance & Audit" />
+        <Link href="/Support">
+          <SidebarItem icon={<Award size={24} />} label="Support" />
+        </Link>
+        <div
+          onClick={() => handleSidebarClick("Settings")}
+          className="flex items-center space-x-3 cursor-pointer px-3 py-2 rounded-md transition duration-300 hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#60a5fa] hover:text-white"
+        >
+          <Settings size={18} className="text-black-500" /> <span>Settings</span>
+        </div>
+
+        <div className="mt-6 mb-2 px-1">
+          <span className="text-sm font-bold text-black">People</span>
+        </div>
+        {/* Add correct hrefs for these if you have them */}
+        <SidebarItem icon={<FileText size={24} />} label="Interview" />
+        <div
+            onClick={() => handleSidebarClick("Candidates")}
+            className="cursor-pointer"
+          >
+            <SidebarItem icon={<Users2 size={24} />} label="Candidates" />
+          </div>
+        <SidebarItem icon={<Briefcase size={24} />} label="Department" />
+        <SidebarItem icon={<Edit2 size={24} />} label="Onboarding" />
+
+        <div className="mt-6 mb-2 px-1">
+          <span className="text-sm font-bold text-black">Management</span>
+          </div>
+          <SidebarItem icon={<UserPlus size={24} />} label="Feedback" />
+        <SidebarItem icon={<MessageSquare size={24} />} label="Requests" />
       </nav>
     </aside>
 
     {/* MAIN SECTION */}
     <div className="flex-1 flex flex-col">
-      {/* ORIGINAL CONTENT RENDERING */}
-      <main className="flex-1 overflow-y-auto">
-          {currentView === "dashboard" && (
-            <DashboardPage />
-          )}
-          {currentView === "upload" && <div className="p-6">Upload Section</div>}
-          {currentView === "processing" && <div className="p-6">Processing...</div>}
-          {currentView === "results" && <div className="p-6">Results</div>}
+        <main className="flex-1 overflow-y-auto">
+          {currentView === "dashboard" && <DashboardPage />}
+          {currentView === "upload" && renderUploadForm()}
+          {currentView === "processing" && renderProcessing()}
+          {currentView === "results" && renderResults()}
+          {currentView === "candidates" && <CandidatesPage />}
+          {currentView === "Recruitment" && <RecruitmentBoard />}
         </main>
+      </div>
     </div>
-  </div>
 )
 }

@@ -5,11 +5,14 @@ import { User, Video, Calendar as CalendarIcon, Shield, DollarSign, Brain, Trend
 import { useState } from "react"
 import Image from 'next/image'
 
+const glass = "backdrop-blur-lg bg-white/60 shadow-2xl border border-white/30";
+const animateCard = "transition-transform duration-500 hover:scale-[1.025] hover:shadow-2xl";
+
 function AgentsPayrollAssetCards() {
   return (
     <div className="flex flex-col md:flex-row gap-8 mt-8">
       {/* Laxmi Card */}
-      <div className="bg-white rounded-2xl shadow-md p-8 max-w-[540px] min-w-[450px] flex-1 flex flex-col">
+      <div className={`${glass} ${animateCard} rounded-2xl p-8 max-w-[540px] min-w-[450px] flex-1 flex flex-col`}>
         {/* Header */}
         <div className="flex items-center gap-4 mb-1">
           <div className="w-12 h-12 rounded-full bg-[#E5E7EB] flex items-center justify-center">
@@ -92,7 +95,7 @@ function AgentsPayrollAssetCards() {
       
 
       {/* Nova Card */}
-      <div className="bg-white rounded-2xl shadow-md p-8 max-w-[540px] min-w-[420px] flex-1 flex flex-col">
+      <div className={`${glass} ${animateCard} rounded-2xl p-8 max-w-[540px] min-w-[420px] flex-1 flex flex-col`}>
         {/* Header */}
         <div className="flex items-center gap-4 mb-1">
           <div className="w-12 h-12 rounded-full bg-[#E5E7EB] flex items-center justify-center">
@@ -188,7 +191,7 @@ function AgentsPayrollAssetCards() {
 
 function BonusesAndIncentivesCard() {
   return (
-    <div className="bg-[#F6FAFD] rounded-[2.5rem] shadow p-0 mb-8 w-full max-w-[480px] mx-auto relative overflow-hidden" style={{ minHeight: 480 }}>
+    <div className={`${glass} ${animateCard} rounded-[2.5rem] shadow p-0 mb-8 w-full max-w-[480px] mx-auto relative overflow-hidden`} style={{ minHeight: 480 }}>
       {/* Title and expand icon */}
       <div className="flex items-center justify-between px-10 pt-10 pb-2">
         <span className="text-[2.2rem] font-bold text-[#181C32]">Bonuses and Incentives</span>
@@ -291,7 +294,7 @@ function BonusesAndIncentivesCard() {
 
 function SalaryBreakdownCard() {
   return (
-    <div className="bg-[#4099F7] rounded-[2.5rem] shadow p-0 w-full max-w-[480px] mx-auto relative overflow-hidden min-h-[420px] flex flex-col justify-between">
+    <div className={`${glass} ${animateCard} rounded-[2.5rem] shadow p-0 w-full max-w-[480px] mx-auto relative overflow-hidden min-h-[420px] flex flex-col justify-between`}>
       {/* Basic Salary */}
       <div className="px-6 pt-8">
         <div className="bg-[#ED7D31] rounded-[2rem] flex items-center justify-between px-8 py-3 mb-6 border-2 border-white">
@@ -343,7 +346,7 @@ function SalaryBreakdownCard() {
 function AgentsOverviewCards() {
   return (
     <div className="flex flex-col md:flex-row gap-8 mt-8">
-    <div className="bg-white rounded-2xl shadow-md p-8 max-w-[520px] min-w-[450px] mx-auto">
+    <div className={`${glass} ${animateCard} rounded-2xl p-8 max-w-[520px] min-w-[450px] mx-auto`}>
       {/* Header */}
       <div className="flex items-center gap-4 mb-2">
         <div className="w-12 h-12 rounded-full bg-[#E5E7EB] flex items-center justify-center">
@@ -443,7 +446,7 @@ function AgentsOverviewCards() {
     </div>
 
       {/* Maxi Card */}
-      <div className="bg-white rounded-2xl shadow-md p-8 flex-1 min-w-[380px] max-w-[540px]">
+      <div className={`${glass} ${animateCard} rounded-2xl p-8 flex-1 min-w-[380px] max-w-[540px]`}>
         <div className="flex items-center gap-4 mb-2">
           <div className="w-10 h-10 rounded-full bg-[#E5E7EB] flex items-center justify-center">
             <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
@@ -696,7 +699,7 @@ export default function HrAnalyticsDashboard() {
   return (
     <div className="p-6 bg-[#f7f8fa] min-h-screen">
       {/* Header */}
-      <Card className="mb-6">
+      <Card className={`${glass} ${animateCard} mb-6`}>
         <CardContent className="flex items-center gap-4 py-6">
           <img src="images/People_1.png" alt="User" className="w-12 h-12 rounded-full" />
           <div>
@@ -720,7 +723,7 @@ export default function HrAnalyticsDashboard() {
             {cardData.slice(0, 6).map((card) => (
               <div
                 key={card.title}
-                className="bg-white rounded-2xl shadow-sm p-4 flex flex-col h-full relative border border-[#F2F2F2] min-h-[200px] max-h-[220px]"
+                className={`${glass} ${animateCard} rounded-2xl shadow-sm p-4 flex flex-col h-full relative border border-[#F2F2F2] min-h-[200px] max-h-[220px]`}
               >
                 <div className={`absolute top-2 right-2 rounded-full p-2 ${card.bgIcon}`}>
                   {card.icon}
@@ -743,7 +746,7 @@ export default function HrAnalyticsDashboard() {
             ))}
           </div>
           {/* Sales Overview Card */}
-          <div className="bg-white rounded-2xl shadow-sm p-8 mt-4 border border-[#F2F2F2]">
+          <div className={`${glass} ${animateCard} rounded-2xl shadow-sm p-8 mt-4 border border-[#F2F2F2]`}>
             <div className="flex items-start justify-between mb-6">
               <div>
                 <div className="text-4xl font-bold text-[#181C32] mb-2">Sales Overview</div>
@@ -849,7 +852,7 @@ export default function HrAnalyticsDashboard() {
           {/* Employees By Department & Active Employees */}
           <div className="flex flex-col lg:flex-row gap-4 mt-8">
             {/* Employees By Department Card */}
-            <div className="bg-white rounded-2xl shadow-sm p-8 border border-[#F2F2F2] flex-1 max-w-[480px]">
+            <div className={`${glass} ${animateCard} rounded-2xl shadow-sm p-8 border border-[#F2F2F2] flex-1 max-w-[480px]`}>
               <div className="flex items-center justify-between mb-6">
                 <div className="text-xl font-bold text-[#181C32]">Employees By Department</div>
                 <div className="flex items-center gap-2">
@@ -887,7 +890,7 @@ export default function HrAnalyticsDashboard() {
               </div>
             </div>
             {/* Active Employees Card */}
-            <div className="bg-white rounded-2xl shadow-sm p-8 border border-[#F2F2F2] flex-1 min-w-[380px]">
+            <div className={`${glass} ${animateCard} rounded-2xl shadow-sm p-8 border border-[#F2F2F2] flex-1 min-w-[380px]`}>
               <div className="flex items-center justify-between mb-6">
                 <div className="text-2xl font-bold text-[#181C32]">Active Employees</div>
                 <button className="bg-[#F3F4F6] text-[#6B7280] rounded-lg px-4 py-1 font-semibold text-lg">View All</button>
@@ -956,7 +959,7 @@ export default function HrAnalyticsDashboard() {
               <AgentsPayrollAssetCards />
         </div>
         {/* Right: Talent Recruitment Card, full height of 2 rows */}
-        <div className="flex flex-col justify-stretch min-h-full xl:ml-0 xl:w-[460px] w-full gap-2">
+        <div className={`${glass} ${animateCard} flex flex-col justify-stretch min-h-full xl:ml-0 xl:w-[460px] w-full gap-2`}>
           {/* Talent Recruitment Card */}
           <div className="bg-[#F8FAFB] rounded-2xl shadow-sm p-8 flex flex-col border border-[#F2F2F2] h-full max-h-[680px]">
             <div className="mb-2 text-sm font-semibold text-[#222]">Hiring statistics</div>
@@ -1114,7 +1117,7 @@ export default function HrAnalyticsDashboard() {
             </div>
           </div>
           {/* Jobs Applicants Card */}
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-[#F2F2F2] mt-8">
+          <div className={`${glass} ${animateCard} rounded-2xl shadow-sm p-6 border border-[#F2F2F2] mt-8`}>
             <div className="flex items-center justify-between mb-4">
               <div className="text-2xl font-bold text-[#181C32]">Jobs Applicants</div>
               <button className="bg-[#F3F4F6] text-[#6B7280] rounded-lg px-4 py-1 font-semibold text-lg">View All</button>
@@ -1171,7 +1174,7 @@ export default function HrAnalyticsDashboard() {
             </div>
           </div>
           {/* Meetings Card */}
-          <div className="bg-white rounded-2xl shadow-sm p-8 border border-[#F2F2F2] mt-8">
+          <div className={`${glass} ${animateCard} rounded-2xl shadow-sm p-8 border border-[#F2F2F2] mt-8`}>
             <div className="text-4xl font-bold text-[#181C32] mb-8">Meetings</div>
             {/* Calendar Row */}
             <div className="flex items-center gap-2 mb-4">
@@ -1230,7 +1233,7 @@ export default function HrAnalyticsDashboard() {
       </div>
       
     </div>
-  )
+  );
 }
 
 // Dummy DownloadIcon for header

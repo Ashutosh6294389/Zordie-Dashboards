@@ -67,6 +67,7 @@ import HRAnalyticsDashboard from "@/components/HRAnalyticsDashboard"
 import RecruitmentBoard from "@/components/RecruitmentBoard"
 import CandidatesPage from "@/components/CandidatesPage"
 import Support from "@/components/Support"
+import Joblist from "@/components/Joblist"
 
 
 function SidebarItem({ icon, label, active = false }: { icon: React.ReactNode; label: string; active?: boolean }) {
@@ -1166,7 +1167,7 @@ Senior HR Business Partner
             <SidebarItem icon={<FileText size={24} />} label="Recruitment" />
         </Link>
         <Link href="/Analytics&Reporting">
-          <SidebarItem icon={<ChartBar size={24} />} label="Analytics & Reporting" />
+          <SidebarItem icon={<ChartBar size={24} />} label="Analytics" />
         </Link>
         {/* My Jobs - add your route if available */}
         {/* <Link href="/my-jobs">
@@ -1216,7 +1217,7 @@ Senior HR Business Partner
           {currentView === "upload" && renderUploadForm()}
           {currentView === "processing" && renderProcessing()}
           {currentView === "results" && renderResults()}
-          {currentView === "candidates" && <CandidatesPage />}
+          {currentView === "candidates" && <Joblist />}
           {currentView === "Recruitment" && <RecruitmentBoard />}
           {currentView === "Support" && <Support />}
         </main>

@@ -485,7 +485,7 @@ export default function Support() {
           <HelpQueriesCard />
           <PastHelpQueries />
           <div className="flex-1 h-full">
-            {/*<ScoreDistributionCard /> */}
+            {/*<ScoreDistributionCard /> */} 
           </div>
         </div>
         <div className="h-full flex-shrink-0 flex flex-col gap-8" style={{ minWidth: 390, maxWidth: 440 }}>

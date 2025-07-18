@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import { Users, Star, CheckCircle, XCircle, ArrowUp, Search, Bell, BarChart3 } from "lucide-react";
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
+import { useRouter } from "next/navigation";
 
 const cardGradient = "bg-[linear-gradient(180deg,white_60%,#e0f2fe_100%)]";
 
@@ -59,7 +61,7 @@ function RecentApplicationsCard() {
   return (
     <div className="bg-white rounded-3xl shadow-md p-8 mt-8" style={{ boxShadow: "0 8px 24px 0 rgba(0,0,0,0.06)", background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)" }}>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#181C32]">Recent Applications</h2>
+        <h2 className="text-2xl font-bold text-[#181C32]">Candidate Comparison</h2>
         <div className="flex gap-4">
           <select
             className="rounded-2xl border border-gray-200 px-2 py-1 text-lg text-gray-600 focus:outline-none"
@@ -236,13 +238,15 @@ function DonutChartLarge({ percent, color, textColor }) {
 // Optimus Card (left)
 function OptimusScoreCard() {
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-8 flex-1 min-w-[520px] max-w-[720px] flex flex-col" style={{ minHeight: 410, background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
+    <div className="bg-white rounded-3xl shadow-lg p-8 flex-1 min-w-[620px]  flex flex-col" style={{ minHeight: 410, background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="font-bold">
-          <span className="text-purple-600 text-2xl">Optimus</span>
-          <span className="text-gray-800 font-normal text-base"> - Verified Resume, Skills & Trust Score</span>
+          <span className="text-purple-600 text-2xl">Verified Resume, Skills & Trust Score</span>
         </div>
+        <button className="border border-gray-300 rounded-xl px-4 py-2 text-lg font-semibold text-gray-900 bg-white flex items-center gap-2">
+          Score 94/100
+        </button>
         <button className="border border-gray-300 rounded-xl px-4 py-2 text-lg font-semibold text-gray-900 bg-white flex items-center gap-2">
           View Breakdown
           <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M9 18l6-6-6-6"/></svg>
@@ -268,6 +272,81 @@ function OptimusScoreCard() {
   );
 }
 
+function SkillMatchGaugeCard({ percent = 72 }) {
+  // Gauge dimensions
+  const size = 320;
+  const strokeWidth = 28;
+  const radius = (size - strokeWidth) / 2;
+  const center = size / 2;
+  const startAngle = -135;
+  const endAngle = 135;
+  const angle = startAngle + ((endAngle - startAngle) * percent) / 100;
+
+  // Helper to get coordinates for arc ends
+  const polarToCartesian = (cx, cy, r, deg) => {
+    const rad = (deg - 90) * Math.PI / 180;
+    return {
+      x: cx + r * Math.cos(rad),
+      y: cy + r * Math.sin(rad),
+    };
+  };
+
+  // Arc path for gauge
+  const describeArc = (cx, cy, r, start, end) => {
+    const startPt = polarToCartesian(cx, cy, r, end);
+    const endPt = polarToCartesian(cx, cy, r, start);
+    const largeArcFlag = end - start <= 180 ? "0" : "1";
+    return [
+      "M", startPt.x, startPt.y,
+      "A", r, r, 0, largeArcFlag, 0, endPt.x, endPt.y
+    ].join(" ");
+  };
+
+  // Needle coordinates
+  const needleLength = radius - strokeWidth / 2 - 10;
+  const needleEnd = polarToCartesian(center, center, needleLength, angle);
+
+  return (
+    <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center min-w-[340px] max-w-[420px]" style={{ minHeight: 410, background: "linear-gradient(180deg,white 80%,#f6fbff 100%)" }}>
+      <div className="text-2xl font-bold text-gray-900 mb-2">Skill Match Percentage</div>
+      <hr className="mb-8 -mx-8 border-gray-200" />
+      <div className="flex-1 flex items-center justify-center w-full">
+        <svg width={size} height={size*1.2 } viewBox={`0 0 ${size} ${size / 1.2}`}>
+          {/* Background arc */}
+          <path
+            d={describeArc(center, center, radius, startAngle, endAngle)}
+            stroke="#E5EAF0"
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+          {/* Foreground arc */}
+          <path
+            d={describeArc(center, center, radius, startAngle, angle)}
+            stroke="#3578C6"
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeLinecap="round"
+          />
+          {/* Needle */}
+          <line
+            x1={center}
+            y1={center}
+            x2={needleEnd.x}
+            y2={needleEnd.y}
+            stroke="#3578C6"
+            strokeWidth={4}
+          />
+          {/* Center circle */}
+          <circle cx={center} cy={center} r={strokeWidth / 2} fill="#3578C6" />
+          {/* Labels */}
+          <text x={strokeWidth + 20} y={size / 1.2 +40}  fontSize="32" fontWeight="bold" fill="#6B7280">0%</text>
+          <text x={size - strokeWidth - 70} y={size / 1.2 +40} fontSize="32" fontWeight="bold" fill="#6B7280">100%</text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 // Example: Monica Card (right, similar style)
 
 function MonicaScoreCard() {
@@ -284,9 +363,11 @@ function MonicaScoreCard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="font-bold">
-          <span className="text-purple-600 text-2xl">Monica</span>
-          <span className="text-gray-800 font-normal text-base"> - Culture Fit & Behavioral Intelligence</span>
+          <span className="text-purple-600 text-2xl">Behavioural Score</span>
         </div>
+        <button className="border border-gray-300 rounded-xl px-4 py-2 text-lg font-semibold text-gray-900 bg-white flex items-center gap-2">
+          Score 88/100
+        </button>
         <button className="border border-gray-300 rounded-xl px-4 py-2 text-lg font-semibold text-gray-900 bg-white flex items-center gap-2">
           View Breakdown
           <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M9 18l6-6-6-6"/></svg>
@@ -449,22 +530,50 @@ function CumulativeAgentScoresCard() {
 }
 
 function SkillsAssessmentCard() {
+  const router = useRouter();
+
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 mt-8 mx-auto max-w-5xl border border-gray-100" style={{ minHeight: 420, background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
+    <div className="bg-white rounded-2xl shadow-xl p-8 mt-8 mx-auto min-w-[400px] border border-gray-100" style={{ maxHeight: 90}}>
       {/* Tabs */}
       <div className="flex gap-8 mb-8">
-        <button className="bg-green-600 text-white text-xl font-bold rounded-3xl px-12 py-2 shadow-md" style={{ boxShadow: "0 4px 12px 0 #0001" }}>
+        <button
+          className="text-lg font-bold rounded-3xl px-4 py-2 shadow-md bg-green-600 text-white"
+          style={{ boxShadow: "0 4px 12px 0 #0001" }}
+          onClick={() => router.push('/Result')}
+        >
           Overview
         </button>
-        <button className="bg-gray-100 text-gray-400 text-xl font-bold rounded-3xl px-12 py-2">Emma</button>
-        <button className="bg-gray-100 text-gray-400 text-xl font-bold rounded-3xl px-12 py-2">Optimus</button>
-        <button className="bg-gray-100 text-gray-400 text-xl font-bold rounded-3xl px-12 py-2">Monica</button>
+        <button
+          className="text-lg font-bold rounded-3xl px-4 py-2 bg-gray-100 text-gray-400"
+          onClick={() => router.push("/candidates/skills/technical")}
+        >
+          Technical Scores
+        </button>
+        <button
+          className="text-lg font-bold rounded-3xl px-4 py-2 bg-gray-100 text-gray-400"
+          onClick={() => router.push('/Resume')}
+        >
+          Resume Scores
+        </button>
+        <button
+          className="text-lg font-bold rounded-3xl px-4 py-2 bg-gray-100 text-gray-400"
+          onClick={() => router.push('/Behaviour')}
+        >
+          Behaviour Scores
+        </button>
       </div>
-      {/* Card Header */}
+    </div>
+  );
+}
+
+
+function InterviewScore() {
+  return(
+    <div className="bg-white rounded-3xl shadow-lg p-8 flex-1 min-w-[540px] max-w-[720px] flex flex-col" style={{ minHeight: 410, background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
+  {/* Card Header */}
       <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
         <div className="text-xl font-semibold">
-          <span className="text-purple-500 font-bold">Emma</span>
-          <span className="text-gray-900 font-semibold"> - Technical Simulation</span>
+          <span className="text-purple-500 font-bold">Interview Score</span>
         </div>
         <div className="flex gap-4">
           <div className="border border-gray-300 rounded-xl px-4 py-2 text-lg font-semibold text-gray-700 bg-white">
@@ -512,16 +621,57 @@ function SkillsAssessmentCard() {
           <div className="text-gray-400 text-xl font-semibold mb-8">3 mins</div>
         </div>*/}
       </div>
+      </div>
+  );
+}
+
+function OverallPerformanceCard() {
+  const data = [
+    { subject: "API Design", score: 80 },
+    { subject: "System Integration", score: 70 },
+    { subject: "Experience Match", score: 65 },
+    { subject: "Leadership", score: 75 },
+    { subject: "Assertiveness", score: 60 },
+    { subject: "Git-hub Score", score: 68 },
+    { subject: "Communication", score: 72 },
+  ];
+
+  return (
+    <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col min-w-[700px]" style={{ minHeight: 510, background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
+      <div className="flex items-center justify-between mb-4">
+        <div className="text-3xl font-bold text-gray-900">Overall Performance</div>
+        <button className="border border-gray-300 rounded-xl px-6 py-3 text-lg font-semibold text-gray-900 bg-white flex items-center gap-2 hover:bg-gray-50 transition">
+          View Breakdown
+          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <hr className="mb-8 -mx-8 border-gray-200" />
+      <div className="flex-1 flex items-center justify-center">
+        <ResponsiveContainer width="100%" height={380}>
+          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+            <PolarGrid stroke="#e5e7eb" />
+            <PolarAngleAxis dataKey="subject" tick={{ fill: "#6B7280", fontSize: 20, fontWeight: 500 }} />
+            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} />
+            <Radar
+              name="Score"
+              dataKey="score"
+              stroke="#A259FF"
+              fill="#A259FF"
+              fillOpacity={0.3}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
 
-
 // SuccessPredictionCard component
 function SuccessPredictionCard() {
   return (
-    <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center min-w-[340px] max-w-[380px] min-h-[510px]" style={{background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
-      <div className="text-2xl font-bold mb-4 text-gray-900 text-center">Success Prediction</div>
+    <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col items-center min-w-[700px] max-w-[380px] min-h-[510px]" style={{background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
+      <div className="text-2xl font-bold mb-4 text-gray-900 ">Success Prediction
+      </div>
       <div className="relative flex items-center justify-center mb-6">
         {/* Donut Chart */}
         <svg width="full" height="250" viewBox="0 0 120 120">
@@ -746,12 +896,20 @@ export default function CandidatesPage() {
         </div>
         {/* Right: Ongoing Activities, stretches full height of left column */}
         <div className="h-full flex-shrink-0 flex flex-col gap-4" style={{ minWidth: 390 }}>
-            <SuccessPredictionCard />
             <CumulativeAgentScoresCard />
         </div>
       </div>
       <div className="flex gap-8 mt-8">
+        <OverallPerformanceCard />
+        <SuccessPredictionCard />
+      </div>
+      <div className="flex gap-8 mt-8">
         <OptimusScoreCard />
+        <SkillMatchGaugeCard />
+        {/*<MonicaScoreCard />*/}
+      </div>
+      <div className="flex gap-8 mt-8">
+        <InterviewScore />
         <MonicaScoreCard />
       </div>
       <StrengthsWeaknessesRow />

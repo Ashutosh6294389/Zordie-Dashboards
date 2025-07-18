@@ -1,15 +1,15 @@
 "use client";
 
 import Sidebar from "@/components/Sidebar";
-import Dashboard from "@/components/DashboardPage";
+import BehaviourScore from "@/components/BehaviourScore";
 
-export default function HRDashboard() {
+export default function Behaviour() {
 
   return (
     <div className="flex min-h-screen">
       <Sidebar />
       <main className="flex-1 p-1 bg-gray-50">
-        <Dashboard />
+        <BehaviourScore />
       </main>
     </div>
   );

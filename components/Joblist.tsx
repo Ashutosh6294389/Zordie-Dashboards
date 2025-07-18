@@ -1,6 +1,9 @@
 import React, {useState} from "react";
 import {Users, Star, CheckCircle, XCircle, ArrowUp, ArrowDown, Search, Bell, User, ChevronRight, ArrowUpRight, Edit, Download, Pause, X, Plus, Calendar } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, LineChart, Line } from "recharts";
+import CandidateProfile from "./CandidateProfile";
+import { useRouter } from "next/navigation";
+import Link from 'next/link'
 
 const cardGradient = "bg-[linear-gradient(180deg,white_60%,#e0f2fe_100%)]";
 
@@ -298,7 +301,27 @@ function RecentApplicationsCard() {
 }
 
 function CandidateProfileDrawer({ open, onClose, candidate }) {
+  const [expanded, setExpanded] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+  const router = useRouter();
+
   if (!open || !candidate) return null;
+
+  const handleExpand = () => setExpanded((prev) => !prev);
+  const handleLayoutToggle = () => {
+    // Implement your layout toggle logic here
+    alert("Layout toggled!");
+  };
+  const handleFullscreen = () => {
+  // Convert all values to string to ensure proper parsing
+  const params = new URLSearchParams(
+    Object.entries(candidate).reduce((acc, [key, value]) => {
+      acc[key] = value !== undefined && value !== null ? String(value) : "";
+      return acc;
+    }, {} as Record<string, string>)
+  );
+  router.push(`/CandidateProfile?${params.toString()}`);
+};
   return (
     <>
       {/* Overlay */}
@@ -308,8 +331,48 @@ function CandidateProfileDrawer({ open, onClose, candidate }) {
         aria-label="Close profile drawer"
       />
       {/* Drawer */}
-      <div className="fixed top-0 right-0 h-full w-full max-w-xl bg-white shadow-2xl z-50 flex flex-col overflow-y-auto transition-transform duration-300"
-        style={{ transform: open ? "translateX(0)" : "translateX(100%)" }}>
+      <div
+        className={`fixed top-0 right-0 h-full bg-white shadow-2xl z-50 flex flex-col overflow-y-auto transition-transform duration-300 ${
+          fullscreen ? "w-full max-w-full" : "w-full max-w-xl"
+        }`}
+        style={{ transform: open ? "translateX(0)" : "translateX(100%)" }}
+      >
+          {/* Top Action Buttons */}
+        <div className="flex items-center gap-8 p-4 pb-0">
+          <button
+            className="text-gray-500 hover:text-gray-700 transition"
+            title="Expand/Collapse"
+            onClick={handleExpand}
+          >
+            {/* Double Arrow Icon */}
+            <svg width="36" height="36" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 36 36">
+              <path d="M10 14l6 6m0 0l6-6m-6 6V6" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M26 22l-6-6m0 0l-6 6m6-6v12" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button
+            className="text-gray-500 hover:text-gray-700 transition"
+            title="Fullscreen"
+            onClick={handleFullscreen}
+          >
+            {/* Fullscreen Icon */}
+            <svg width="36" height="36" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 36 36">
+              <path d="M6 30v-8m0 8h8m-8 0l8-8" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M30 6v8m0-8h-8m8 0l-8 8" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button
+            className="text-gray-500 hover:text-gray-700 transition"
+            title="Layout Toggle"
+            onClick={handleLayoutToggle}
+          >
+            {/* Layout Icon */}
+            <svg width="36" height="36" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 36 36">
+              <rect x="8" y="8" width="20" height="20" rx="4" strokeLinecap="round" strokeLinejoin="round"/>
+              <rect x="8" y="8" width="8" height="20" rx="2" fill="#888" />
+            </svg>
+          </button>
+        </div>
         <div className="p-8">
           <div className="flex items-center gap-4 mb-6">
             <img src={candidate.img} alt={candidate.name} className="w-16 h-16 rounded-full object-cover" />
@@ -434,6 +497,17 @@ function CandidatesCard() {
       contact: "(684) 555-0102",
       img: "/images/People_1.png",
       email:"Shane@gmail.com",
+      age: "28",
+      degree: "Bachelor’s Degree",
+      gender: "Female",
+      experience: "3 years of Experience",
+      matchRate: "96",
+      educationScore: "90",
+      experienceScore: "88",
+      skillsScore: "90",
+      ageScore: "78",
+      linkedin: "r",
+      address: "r",
     },
     {
       name: "Sarah Johnson",
@@ -442,6 +516,17 @@ function CandidatesCard() {
       contact: "(704) 555-0127",
       img: "/images/People_2.png",
       email:"Sarah,johnson@gmail.com",
+      age: "28",
+      degree: "Bachelor’s Degree",
+      gender: "Female",
+      experience: "3 years of Experience",
+      matchRate: "96",
+      educationScore: "90",
+      experienceScore: "88",
+      skillsScore: 90,
+      ageScore: 78,
+      linkedin: "r",
+      address: "r",
     },
     {
       name: "Victoria",
@@ -450,6 +535,17 @@ function CandidatesCard() {
       contact: "(302) 555-0107",
       img: "/images/People_3.png",
       email:"Victoria@gmail.com",
+      age: 28,
+      degree: "Bachelor’s Degree",
+      gender: "Female",
+      experience: "3 years of Experience",
+      matchRate: 96,
+      educationScore: 90,
+      experienceScore: 88,
+      skillsScore: 90,
+      ageScore: 78,
+      linkedin: "r",
+      address: "r",
     },
     {
       name: "Angel",
@@ -458,6 +554,17 @@ function CandidatesCard() {
       contact: "(239) 555-0108",
       img: "/images/People_6.png",
       email:"Angel@gmail.com",
+      age: 28,
+      degree: "Bachelor’s Degree",
+      gender: "Female",
+      experience: "3 years of Experience",
+      matchRate: 96,
+      educationScore: 90,
+      experienceScore: 88,
+      skillsScore: 90,
+      ageScore: 78,
+      linkedin: "",
+      address: "r",
     },
     {
       name: "Kristin",
@@ -466,6 +573,17 @@ function CandidatesCard() {
       contact: "(702) 555-0122",
       img: "/images/People_5.png",
       email:"Kristin@gmail.com",
+      age: 28,
+      degree: "Bachelor’s Degree",
+      gender: "Female",
+      experience: "3 years of Experience",
+      matchRate: 96,
+      educationScore: 90,
+      experienceScore: 88,
+      skillsScore: 90,
+      ageScore: 78,
+      linkedin: "r",
+      address: "r",
     },
   ];
 
@@ -913,7 +1031,7 @@ function OngoingActivitiesCard() {
   return (
     <div className={`rounded-2xl shadow-md p-8 min-w-[445px] min-h-[540px] ${cardGradient}`}>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-semibold text-2xl">Ongoing Activites</h2>
+        <h2 className="font-semibold text-2xl">Top Performing Candidates</h2>
         <button className="border px-4 py-1 rounded-2xl text-lg font-medium">See All</button>
       </div>
       <div className="border-b border-gray-200 mb-4"></div>

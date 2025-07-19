@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Users, Star, CheckCircle, XCircle, ArrowUp, ArrowDown, Search, Bell, User, ChevronRight, ArrowUpRight, Edit, Download, Pause, X, Plus, Calendar } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell, LineChart, Line } from "recharts";
-import CandidateProfile from "./CandidateProfile";
 import { useRouter } from "next/navigation";
 import Link from 'next/link'
 
@@ -58,8 +57,8 @@ function ScheduleCard() {
         </button>
       </div>
       <div className="space-y-8">
-        {events.map((event, idx) => (
-          <div key={idx} className="flex items-center">
+        {events.map((event) => (
+          <div key={event.title + event.time} className="flex items-center">
             <div className="w-24 text-right pr-4 text-lg font-medium text-black">{event.time}</div>
             <div className="flex flex-col items-center mr-4">
               {event.icon}
@@ -206,97 +205,6 @@ function AdminControlsCard() {
         </button>
       </div>
     </div>
-  );
-}
-
-function RecentApplicationsCard() {
-  const applications = [
-    {
-      name: "Alex Johnson",
-      img: "/images/People_1.png",
-      applied: "Applied 2 hours ago",
-      source: "LinkedIn",
-      match: 95,
-      matchColor: "bg-green-100 text-green-700",
-      profileUrl: "#",
-      contact: "(684) 555-0102",
-      email: "alex.johnson@email.com",
-    },
-    {
-      name: "Sarah Chen",
-      img: "/images/People_2.png",
-      applied: "Applied 1 day ago",
-      source: "Referral",
-      match: 87,
-      matchColor: "bg-yellow-100 text-yellow-800",
-      profileUrl: "#",
-      contact: "(704) 555-0127",
-      email: "sarah.chen@email.com",
-    },
-    {
-      name: "Mike Rodriguez",
-      img: "/images/People_3.png",
-      applied: "Applied 3 days ago",
-      source: "Direct",
-      match: 78,
-      matchColor: "bg-blue-100 text-blue-700",
-      profileUrl: "#",
-      contact: "(302) 555-0107",
-      email: "mike.rodriguez@email.com",
-    },
-  ];
-
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedCandidate, setSelectedCandidate] = useState(null);
-
-  const handleViewProfile = (candidate) => {
-    setSelectedCandidate(candidate);
-    setDrawerOpen(true);
-  };
-
-  const handleCloseDrawer = () => {
-    setDrawerOpen(false);
-    setSelectedCandidate(null);
-  };
-
-  return (
-    <>
-    <div className="rounded-3xl shadow-md p-8 bg-white border border-gray-100 max-w-6xl w-full mb-6" style={{background: "linear-gradient(180deg,white 80%,#e0f2fe 100%)"}}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-[#181C32]">Recent Applications</h2>
-        <button className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 transition">
-          See All
-          <ChevronRight className="w-5 h-5" />
-        </button>
-      </div>
-      <div className="space-y-6">
-        {applications.map((app, idx) => (
-          <div key={app.name} className="flex items-center bg-white rounded-2xl border border-gray-200 px-6 py-5">
-            <img
-              src={app.img}
-              alt={app.name}
-              className="w-14 h-14 rounded-full object-cover border-2 border-white shadow mr-6"
-            />
-            <div className="flex-1 min-w-0">
-              <div className="font-bold text-xl text-[#181C32]">{app.name}</div>
-              <div className="text-gray-400 text-base truncate">{app.applied} • {app.source}</div>
-            </div>
-            <div className="flex items-center gap-6 ml-auto">
-              <span className={`px-4 py-2 rounded-lg font-semibold text-base ${app.matchColor}`}>{app.match}% Match</span>
-              <a
-                href={app.profileUrl}
-                className="text-blue-600 font-semibold text-base hover:underline"
-                onClick={() => handleViewProfile(app)}
-              >
-                View Profile
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-    <CandidateProfileDrawer open={drawerOpen} onClose={handleCloseDrawer} candidate={selectedCandidate} />
-    </>
   );
 }
 
@@ -484,6 +392,99 @@ function CandidateProfileDrawer({ open, onClose, candidate }) {
   );
 }
 
+function RecentApplicationsCard() {
+  const applications = [
+    {
+      name: "Alex Johnson",
+      img: "/images/People_1.png",
+      applied: "Applied 2 hours ago",
+      source: "LinkedIn",
+      match: 95,
+      matchColor: "bg-green-100 text-green-700",
+      profileUrl: "#",
+      contact: "(684) 555-0102",
+      email: "alex.johnson@email.com",
+    },
+    {
+      name: "Sarah Chen",
+      img: "/images/People_2.png",
+      applied: "Applied 1 day ago",
+      source: "Referral",
+      match: 87,
+      matchColor: "bg-yellow-100 text-yellow-800",
+      profileUrl: "#",
+      contact: "(704) 555-0127",
+      email: "sarah.chen@email.com",
+    },
+    {
+      name: "Mike Rodriguez",
+      img: "/images/People_3.png",
+      applied: "Applied 3 days ago",
+      source: "Direct",
+      match: 78,
+      matchColor: "bg-blue-100 text-blue-700",
+      profileUrl: "#",
+      contact: "(302) 555-0107",
+      email: "mike.rodriguez@email.com",
+    },
+  ];
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+
+  const handleViewProfile = (candidate) => {
+    setSelectedCandidate(candidate);
+    setDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    setSelectedCandidate(null);
+  };
+
+  return (
+    <>
+    <div className="rounded-3xl shadow-md p-8 bg-white border border-gray-100 max-w-6xl w-full mb-6" style={{background: "linear-gradient(180deg,white 80%,#e0f2fe 100%)"}}>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-[#181C32]">Recent Applications</h2>
+        <button className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 transition">
+          See All
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+      <div className="space-y-6">
+        {applications.map((app) => (
+          <div key={app.name + app.applied} className="flex items-center bg-white rounded-2xl border border-gray-200 px-6 py-5">
+            <img
+              src={app.img}
+              alt={app.name}
+              className="w-14 h-14 rounded-full object-cover border-2 border-white shadow mr-6"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="font-bold text-xl text-[#181C32]">{app.name}</div>
+              <div className="text-gray-400 text-base truncate">{app.applied} • {app.source}</div>
+            </div>
+            <div className="flex items-center gap-6 ml-auto">
+              <span className={`px-4 py-2 rounded-lg font-semibold text-base ${app.matchColor}`}>{app.match}% Match</span>
+              <a
+                href={app.profileUrl}
+                className="text-blue-600 font-semibold text-base hover:underline"
+                onClick={() => handleViewProfile(app)}
+              >
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <CandidateProfileDrawer open={drawerOpen} onClose={handleCloseDrawer} candidate={selectedCandidate} />
+    </>
+  );
+}
+
+
+
 function CandidatesCard() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -609,8 +610,8 @@ function CandidatesCard() {
       </div>
       <hr className="mb-6 border-gray-200" />
       <div className="space-y-8">
-        {candidates.map((c, idx) => (
-          <div key={c.name} className="flex items-center">
+        {candidates.map((c) => (
+          <div key={c.name+c.appliedOn} className="flex items-center">
             <img
               src={c.img}
               alt={c.name}
@@ -690,36 +691,50 @@ function CandidateComparisonCard() {
   ];
 
   // Custom dot with label
-  const renderCustomDot = (props) => {
-    const { cx, cy, value, dataKey, index } = props;
-    const label = data[index][dataKey === "candidate1" ? "label1" : "label2"];
-    if (!label) return (
-      <circle cx={cx} cy={cy} r={6} fill={dataKey === "candidate1" ? "#19D3A2" : "#A259FF"} stroke="#fff" strokeWidth={3} />
-    );
-    return (
-      <>
-        <circle cx={cx} cy={cy} r={8} fill={dataKey === "candidate1" ? "#19D3A2" : "#A259FF"} stroke="#fff" strokeWidth={3} />
-        <foreignObject x={cx - 40} y={cy - 40} width={80} height={32}>
-          <div
-            style={{
-              color: dataKey === "candidate1" ? "#19D3A2" : "#A259FF",
-              background: dataKey === "candidate1" ? "#ECFFFA" : "#F6F0FF",
-              borderRadius: 8,
-              fontWeight: 600,
-              fontSize: 18,
-              textAlign: "center",
-              boxShadow: `0 0 12px 0 ${dataKey === "candidate1" ? "#19D3A2" : "#A259FF"}22`,
-              padding: "2px 12px",
-              width: "fit-content",
-              margin: "auto",
-            }}
-          >
-            {label}
-          </div>
-        </foreignObject>
-      </>
-    );
-  };
+const renderCustomDot = (props) => {
+  const { cx, cy, value, dataKey, index } = props;
+  const label = data[index][dataKey === "candidate1" ? "label1" : "label2"];
+  if (!label) return (
+    <circle cx={cx} cy={cy} r={6} fill={dataKey === "candidate1" ? "#19D3A2" : "#A259FF"} stroke="#fff" strokeWidth={3} />
+  );
+  return (
+    <>
+      <circle
+        key="dot"
+        cx={cx}
+        cy={cy}
+        r={8}
+        fill={dataKey === "candidate1" ? "#19D3A2" : "#A259FF"}
+        stroke="#fff"
+        strokeWidth={3}
+      />
+      <foreignObject
+        key="label"
+        x={cx - 40}
+        y={cy - 40}
+        width={80}
+        height={32}
+      >
+        <div
+          style={{
+            color: dataKey === "candidate1" ? "#19D3A2" : "#A259FF",
+            background: dataKey === "candidate1" ? "#ECFFFA" : "#F6F0FF",
+            borderRadius: 8,
+            fontWeight: 600,
+            fontSize: 18,
+            textAlign: "center",
+            boxShadow: `0 0 12px 0 ${dataKey === "candidate1" ? "#19D3A2" : "#A259FF"}22`,
+            padding: "2px 12px",
+            width: "fit-content",
+            margin: "auto",
+          }}
+        >
+          {label}
+        </div>
+      </foreignObject>
+    </>
+  );
+};
 
   return (
     <div className="rounded-3xl shadow-md p-8 bg-white mb-6 border border-gray-100 max-w-6xl w-full" style={{background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)"}}>
@@ -1036,8 +1051,8 @@ function OngoingActivitiesCard() {
       </div>
       <div className="border-b border-gray-200 mb-4"></div>
       <div className="space-y-5">
-        {activities.map((item, idx) => (
-          <div key={idx} className="flex items-center justify-between bg-gray-100 rounded-xl px-5 py-5">
+        {activities.map((item) => (
+          <div key={item.title + item.subtitle} className="flex items-center justify-between bg-gray-100 rounded-xl px-5 py-5">
             <div className="flex items-center gap-3">
               {item.icon}
               <div>

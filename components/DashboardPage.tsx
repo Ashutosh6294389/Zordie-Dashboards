@@ -982,10 +982,10 @@ export default function DashboardPage() {
         <div className="h-full flex-shrink-0 flex flex-col" style={{ minWidth: 390, maxWidth: 440 }}>
           <TalentRecruitmentCard />
           <div className="mt-16">
-            <ApplicationByDepartmentCard />
+            <ApplicationResourcesCard />
           </div>
           <div className="mt-24">
-            <ApplicationResourcesCard />
+            <ApplicationByDepartmentCard />
           </div>
           <div className="mt-32">
             <OngoingActivitiesCard />

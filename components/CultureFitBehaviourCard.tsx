@@ -37,13 +37,13 @@ function VoiceBar({ value, color }) {
 }
 
 function DonutChart({ percent, color, textColor }) {
-  const radius = 55;
+  const radius = 60;
   const stroke = 12;
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const dash = circumference * (percent / 100);
   return (
-    <svg width={120} height={120}>
+    <svg width={200} height={120}>
       <circle
         cx={radius}
         cy={radius}
@@ -64,8 +64,8 @@ function DonutChart({ percent, color, textColor }) {
         transform={`rotate(-90 ${radius} ${radius})`}
       />
       <text
-        x="50%"
-        y="50%"
+        x="33%"
+        y="54%"
         textAnchor="middle"
         fontSize="28"
         fontWeight="bold"
@@ -80,37 +80,82 @@ function DonutChart({ percent, color, textColor }) {
 
 function PsychometricBarChart() {
   const data = [
-    { label: "Openness", value: 80 },
-    { label: "Discipline", value: 95 },
-    { label: "Creativity", value: 90 },
-    { label: "Risk Tolerance", value: 85 },
+    { label: "Openness", value: 85 },
+    { label: "Discipline", value: 97 },
+    { label: "Creativity", value: 93 },
+    { label: "Risk Tolerance", value: 87 },
   ];
+  const chartHeight = 240;
+  const barWidth = 48;
+  const maxValue = 100;
+  const gridLines = [0, 25, 50, 75, 100];
+
   return (
-    <div className="flex items-end gap-8 h-36 mt-6">
-      {data.map((d) => (
-        <div key={d.label} className="flex flex-col items-center w-24">
-          <div className="w-12 h-full flex items-end">
-            <div
-              className="w-12 rounded-xl"
+    <div className="relative w-full h-[180px] px-2 pt-2 pb-4 ">
+      {/* Grid lines and Y-axis labels */}
+      <div className="absolute left-0 right-0 top-0 h-[120px] pointer-events-none z-0">
+        {gridLines.map((v) => (
+          <div
+            key={v}
+            style={{
+              position: "absolute",
+              bottom: `${(v / maxValue) * chartHeight}px`,
+              left: 0,
+              right: 0,
+              borderTop: "1.5px dashed #E5E7EB",
+              height: 0,
+            }}
+          >
+            <span
               style={{
-                height: `${d.value}%`,
-                background: "#3578C6",
-                transition: "height 0.4s",
+                position: "absolute",
+                left: -20,
+                fontSize: 20,
+                color: "#9CA3AF",
+                fontWeight: 500,
+                top: "-50px",
               }}
-            />
-            <div
-              className="absolute w-12 h-4 rounded-b-xl"
-              style={{
-                background: "#E5EAF0",
-                top: 0,
-                left: 0,
-                opacity: 0.7,
-              }}
-            />
+            >
+              {v}
+            </span>
           </div>
-          <span className="mt-2 text-gray-500 font-semibold text-base">{d.label}</span>
-        </div>
-      ))}
+        ))}
+      </div>
+      {/* Bars */}
+      <div className="flex items-end justify-around h-[120px] relative z-10">
+        {data.map((d) => (
+          <div key={d.label} className="flex flex-col items-center">
+            {/* Background bar (full height) */}
+            <div
+              style={{
+                width: barWidth,
+                height: chartHeight,
+                background: "#E5E7EB",
+                borderRadius: "12px 12px 0 0",
+                position: "relative",
+                overflow: "hidden",
+                display: "flex",
+                alignItems: "flex-end",
+              }}
+            >
+              {/* Foreground bar (actual value) */}
+              <div
+                style={{
+                  width: barWidth,
+                  height: `${(d.value / maxValue) * chartHeight}px`,
+                  background: "#4979B9",
+                  borderRadius: "12px 12px 0 0",
+                  transition: "height 0.4s",
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                }}
+              />
+            </div>
+            <span className="mt-2 text-gray-500 font-semibold text-lg ">{d.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -157,23 +202,29 @@ export default function CultureFitBehaviourCard() {
           </div>
         </div>
         {/* Right Column */}
-        <div>
-          <div className="text-xl font-bold text-gray-900 mb-4">Psychometric Profile</div>
-          <PsychometricBarChart />
-          <div className="text-xl font-bold text-gray-900 mb-4 mt-8">Culture Fit Score</div>
-          <div className="flex gap-8 items-center mt-4">
-            <div className="flex flex-col items-center">
-              <DonutChart percent={88} color="#FF4B00" textColor="#FF4B00" />
-              <span className="mt-2 text-lg font-semibold text-gray-700">Team Work</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <DonutChart percent={92} color="#43A047" textColor="#43A047" />
-              <span className="mt-2 text-lg font-semibold text-gray-700">Core Values</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <DonutChart percent={92} color="#6ee0f6" textColor="#3578C6" />
-              <span className="mt-2 text-lg font-semibold text-gray-700">Leadership</span>
-            </div>
+        <div className="flex flex-col justify-between">
+          {/* Psychometric Profile */}
+          <div>
+            <div className="text-xl font-bold text-gray-900 mb-56 text-center">Psychometric Profile</div>
+            <PsychometricBarChart />
+          </div>
+          {/* Culture Fit Score */}
+          <div className="mt-10">
+            <div className="text-xl font-bold text-gray-900 mb-12 text-center">Culture Fit Score</div>
+            <div className="flex gap-8 items-center justify-center">
+              <div className="flex flex-col ">
+                <DonutChart percent={88} color="#FF4B00" textColor="#FF4B00" />
+                <span className="mt-2 text-lg font-semibold text-gray-700 mx-4">Team Work</span>
+              </div>
+              <div className="flex flex-col ">
+                <DonutChart percent={92} color="#43A047" textColor="#43A047" />
+                <span className="mt-2 text-lg font-semibold text-gray-700 mx-4">Core Values</span>
+              </div>
+              <div className="flex flex-col ">
+                <DonutChart percent={92} color="#6ee0f6" textColor="#3578C6" />
+                <span className="mt-2 text-lg font-semibold text-gray-700 mx-4">Leadership</span>
+              </div>
+              </div>
           </div>
         </div>
       </div>

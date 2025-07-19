@@ -358,6 +358,41 @@ function KeyStrengthsCard() {
   );
 }
 
+// ...existing code...
+
+function EnergyPerQuestionCard() {
+  const data = [
+    { question: "Question 1", energy: 80 },
+    { question: "Question 2", energy: 85 },
+    { question: "Question 3", energy: 80 },
+    { question: "Question 4", energy: 65 },
+    { question: "Question 5", energy: 85 },
+    { question: "Question 6", energy: 85 },
+    { question: "Question 7", energy: 75 },
+    { question: "Question 8", energy: 55 },
+    { question: "Question 9", energy: 80 },
+    { question: "Question 10", energy: 97 },
+  ];
+
+  return (
+    <div className="bg-white rounded-3xl shadow-lg p-8 w-full" style={{ maxHeight: 540, background: "linear-gradient(180deg,white 60%,#e0f2fe 100%)" }}>
+      <div className="text-2xl font-bold text-[#181C32] mb-2">Energy Per Question</div>
+      <hr className="mb-8 -mx-8 border-gray-200" />
+      <ResponsiveContainer width="100%" height={380}>
+        <BarChart data={data}>
+          <CartesianGrid stroke="#f3f6f8" />
+          <XAxis dataKey="question" tick={{ fill: "#6B7280", fontSize: 16 }} axisLine={true} tickLine={true} />
+          <YAxis domain={[0, 100]} tick={{ fill: "#A3A3A3", fontSize: 16 }} axisLine={true} tickLine={true} />
+          <Tooltip formatter={(value) => value.toLocaleString()} />
+          <Bar dataKey="energy" fill="#3182CE" radius={[8, 8, 0, 0]} barSize={32}>
+            <LabelList dataKey="energy" position="top" formatter={(value) => value.toLocaleString()} fill="#3182CE" fontSize={18} fontWeight={700} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
 export default function BehaviourScore() {
   return (
     <div className="p-4 bg-gray-50 min-h-screen">
@@ -391,7 +426,7 @@ export default function BehaviourScore() {
         {/*<MonicaScoreCard />*/}
       </div>
       <div className="flex gap-8 mt-8">
-
+        <EnergyPerQuestionCard />
       </div>
       <div className="flex gap-8 mt-8">
 
